@@ -1,0 +1,48 @@
+:root {
+  --c-white: #ffffff;
+
+  --c-black: #181818;
+
+  --c-primary: #05A3AD;
+  --c-primary-100: #F5F7FB;
+
+  --c-blue-400: #2D5A81;
+  --c-blue-500: #14446E;
+
+  --c-gray-200: #E1E1E1;
+  --c-gray-300: #B7BFCD;
+  --c-gray-400: #8C99AF;
+  --c-gray-500: #333F48;
+  --c-gray-600: #283137;
+}
+
+/* semantic color variables for this project */
+:root {
+  --color-primary-light: var(--c-primary-100);
+  --color-primary: var(--c-primary);
+
+  --color-background: var(--c-white);
+
+  --color-border: var(--c-gray-200);
+
+  --color-heading: var(--c-blue-400);
+  --color-title: var(--c-blue-500);
+  --color-text: var(--c-gray-600);
+  --color-text-light: var(--c-gray-400);
+  --color-text-disable: var(--c-gray-200);
+  --color-placeholder: var(--c-gray-300);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--c-white);
+
+    --color-border: var(--c-gray-200);
+
+    --color-heading: var(--c-blue-400);
+    --color-title: var(--c-blue-500);
+    --color-text: var(--c-gray-400);
+    --color-text-disable: var(--c-gray-200);
+    --color-placeholder: var(--c-gray-300);
+  }
+}
