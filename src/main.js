@@ -1,14 +1,17 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue/dist/vue.esm-bundler.js';
+import { createPinia } from 'pinia';
 
-import App from './App.vue'
-import router from './router'
+import App from '@/App.vue';
+import router from '@/router';
+import icons from '@/plugins/icons';
 
-import './assets/styles/main.css'
+import '@/assets/styles/main.scss';
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(createPinia())
-app.use(router)
+app.use(createPinia());
+app.use(router);
+app.use(icons);
 
-app.mount('#app')
+app.mount('#app');
+
