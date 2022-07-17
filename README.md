@@ -1,6 +1,6 @@
 # Vue 3 + Pinia + Vue Router + SCSS + Vite
 
- SPA каталога инвентаря
+ SPA каталога инвентаря https://vovaborisenko.github.io/equipment-catalog/
 
 ## Структура проекта
 
