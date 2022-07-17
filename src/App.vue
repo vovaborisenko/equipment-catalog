@@ -1,7 +1,9 @@
 <template>
   <RouterView />
+  <TheModalRename />
+  <TheNotifications />
 </template>
 
-<style>
-
-</style>
+<script setup>
+import TheModalRename from '@/components/TheModalRename.vue';
+</script>

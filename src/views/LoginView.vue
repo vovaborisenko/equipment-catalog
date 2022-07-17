@@ -1,39 +1,46 @@
 <template>
-  <form
-    class="login"
-    @submit.prevent="login"
+  <BaseModal
+    model-value
+    :closeable="false"
   >
-    <BaseInput
-      label="Login"
-      class="login__field"
-    />
-    <BaseInput
-      label="Password"
-      type="password"
-      class="login__field"
-    />
-    <div class="login__actions">
-      <BaseButton
-        type="submit"
-        class="login__action"
-      >
-        Login
-      </BaseButton>
-      <BaseButton
-        type="reset"
-        theme="secondary"
-        class="login__action"
-      >
-        Reset
-      </BaseButton>
-    </div>
-  </form>
+    <BaseForm
+      class="login"
+      @submit="login"
+    >
+      <BaseInput
+        label="Login"
+        class="form__field"
+      />
+      <BaseInput
+        label="Password"
+        type="password"
+        class="form__field"
+      />
+      <template #actions>
+        <BaseButton
+          type="submit"
+          class="form__action"
+        >
+          Login
+        </BaseButton>
+        <BaseButton
+          type="reset"
+          theme="secondary"
+          class="form__action"
+        >
+          Reset
+        </BaseButton>
+      </template>
+    </BaseForm>
+  </BaseModal>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseButton from '@/components/BaseButton.vue';
+import BaseForm from '@/components/BaseForm.vue';
+import BaseModal from '@/components/BaseModal.vue';
 
 const router = useRouter();
 
@@ -44,24 +51,7 @@ function login() {
 
 <style lang="scss">
 .login {
+  width: 100vw;
   max-width: 320px;
-  margin: auto;
-  padding: 32px;
-  border: 1px solid var(--color-border);
-
-  &__field + &__field {
-    margin-top: 16px;
-  }
-
-  &__actions {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    margin-top: 32px;
-  }
-
-  &__action + &__action {
-    margin-left: 8px;
-  }
 }
 </style>

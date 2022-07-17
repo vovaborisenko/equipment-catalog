@@ -31,6 +31,8 @@
   --color-text-light: var(--c-gray-400);
   --color-text-disable: var(--c-gray-200);
   --color-placeholder: var(--c-gray-300);
+
+  accent-color: var(--color-primary);
 }
 
 @media (prefers-color-scheme: dark) {

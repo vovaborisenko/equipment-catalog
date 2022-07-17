@@ -52,24 +52,28 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useEquipmentStore } from '@/stores/equipment';
 import BaseBox from '@/components/BaseBox.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseCard from '@/components/BaseCard.vue';
 
-import EquipmentDataService from '@/services/EquipmentDataService';
-
 const route = useRoute();
+const equipment = useEquipmentStore();
 
-const list = ref([]);
+const list = computed(() => equipment.list);
+
 const checkbox = ref([]);
-const isChosenItems = computed(() => checkbox.value.length !== 0)
+const isChosenItems = computed(() => checkbox.value.length !== 0);
 
-EquipmentDataService.getEquipmentList(route.params.subcategory)
-  .then((data) => list.value = data)
-  .catch((e) => console.dir(e));
+equipment.getList(route.params.subcategory);
+
+watch(() => route.params.subcategory, () => {
+  equipment.getList(route.params.subcategory);
+  checkbox.value = [];
+});
 </script>
 
 <style lang="scss">

@@ -1,13 +1,11 @@
 <template>
   <div class="catalog">
-    <BaseBox
-      :title="title"
-      class="catalog__aside"
-    >
+    <BaseBox :title="title" class="catalog__aside" @click:add="onClickAdd">
       <ListItem
         v-for="item in list"
         :key="item.id"
-        :to="{name: routeName, params: {[routeName]: item.id}}"
+        :to="{ name: routeName, params: { [routeName]: item.id } }"
+        @click:edit="onClickEdit(item)"
       >
         {{ item.title }}
       </ListItem>
@@ -19,23 +17,28 @@
 </template>
 
 <script>
-import BaseBox from '@/components/BaseBox.vue';
-import ListItem from '@/components/ListItem.vue';
-import EquipmentDataService from '@/services/EquipmentDataService';
+import { defineComponent, computed } from "vue";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
+import { useCategoryStore } from "@/stores/category";
+import { useSubcategoryStore } from "@/stores/subcategory";
+import { useModalRenameStore } from "@/stores/modalRename";
+import useNotification from "@/plugins/notifications/useNotification";
+import BaseBox from "@/components/BaseBox.vue";
+import ListItem from "@/components/ListItem.vue";
 
 const MAP = {
   categories: {
-    title:'Categories',
-    routeName: 'category',
+    title: "Categories",
+    routeName: "category",
   },
   subcategories: {
-    title: 'Subcategories',
-    routeName: 'subcategory',
+    title: "Subcategories",
+    routeName: "subcategory",
   },
-}
+};
 
-export default {
-  name: 'CatalogView',
+export default defineComponent({
+  name: "CatalogView",
   components: {
     BaseBox,
     ListItem,
@@ -44,34 +47,51 @@ export default {
     type: {
       type: String,
       required: true,
-      validator: (value) => Object.keys(MAP).includes(value)
-    }
-  },
-  data: () => ({
-    list: [],
-  }),
-  computed: {
-    title() {
-      return MAP[this.type]?.title;
+      validator: (value) => Object.keys(MAP).includes(value),
     },
-    routeName() {
-      return MAP[this.type]?.routeName;
-    }
   },
-  created() {
-    if (this.type === 'categories') {
-      EquipmentDataService.getCategoryList()
-        .then((data) => this.list = data)
-        .catch((e) => console.dir(e));
-    }
+  setup(props) {
+    const { successNotify, errorNotify } = useNotification();
+    const store = {
+      categories: useCategoryStore,
+      subcategories: useSubcategoryStore,
+    }[props.type]();
+    const { open: openModalRename, close: closeModalRename } = useModalRenameStore();
+    const route = useRoute();
 
-    if (this.type === 'subcategories') {
-      EquipmentDataService.getSubcategoryList(1)
-        .then((data) => this.list = data)
-        .catch((e) => console.dir(e));
-    }
+    const title = computed(() => MAP[props.type]?.title);
+    const routeName = computed(() => MAP[props.type]?.routeName);
+    const list = computed(() => store.list);
+
+    const getList = (id) => store.getList(id);
+    const doRename = (request, params) =>
+      openModalRename({ request, params })
+        .then((data) => {
+          closeModalRename();
+          successNotify(data);
+        })
+        .catch((e) => e && errorNotify(e));
+
+    const onClickAdd = () => doRename(store.addItem, {});
+
+    const onClickEdit = (params) => doRename(store.updateItem, params);
+
+    getList(route.params.category);
+    onBeforeRouteUpdate((to, from) => {
+      if (props.type === "subcategories" && to.params.category !== from.params.category) {
+        getList(to.params.category);
+      }
+    });
+
+    return {
+      title,
+      routeName,
+      list,
+      onClickAdd,
+      onClickEdit,
+    };
   },
-}
+});
 </script>
 
 <style lang="scss">

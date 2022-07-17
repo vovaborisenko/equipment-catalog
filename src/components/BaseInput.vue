@@ -8,6 +8,7 @@
       class="field__label"
     >{{ label }}</span>
     <input
+      :value="modelValue"
       :type="type"
       :placeholder="placeholder"
       :disabled="disabled"
@@ -16,6 +17,7 @@
         'field__input--pre-icon': preIcon,
         'field__input--post-icon': postIcon,
       }"
+      @input="$emit('update:model-value', $event.target.value)"
     >
     <component
       :is="preIcon"
@@ -58,7 +60,13 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  modelValue: {
+    type: String,
+    default: '',
+  },
 });
+
+defineEmits(['update:model-value']);
 
 const classNames = computed(() => ({
   'field--disabled': props.disabled,
@@ -71,9 +79,17 @@ const classNames = computed(() => ({
   display: block;
   color: var(--color-text);
 
+  &--disabled {
+    pointer-events: none;
+  }
+
   &__label {
     display: block;
     margin-bottom: 7px;
+  }
+
+  &--disabled &__label {
+    color: var(--color-placeholder);
   }
 
   &__input {

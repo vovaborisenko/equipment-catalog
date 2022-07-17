@@ -11,6 +11,7 @@
       theme="transparent"
       pre-icon="pencil-icon"
       class="list-item__button"
+      @click="$emit('click:edit')"
     />
   </div>
 </template>
@@ -23,7 +24,9 @@ defineProps({
     type: [String, Object],
     default: '',
   }
-})
+});
+
+defineEmits(['click:edit']);
 </script>
 
 <style lang="scss">
@@ -58,6 +61,10 @@ defineProps({
     border-color: var(--color-primary);
     background-color: var(--color-primary-light);
     transition: 0.2s;
+  }
+
+  &__link--active ~ &__button:hover {
+    background-color: var(--color-background);
   }
 
   &__button {

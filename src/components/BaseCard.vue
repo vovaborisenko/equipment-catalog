@@ -71,6 +71,7 @@ const isChecked = computed({
     position: absolute;
     top: 9px;
     right: 9px;
+    display: flex;
   }
 
   &__img {

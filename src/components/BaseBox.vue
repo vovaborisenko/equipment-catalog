@@ -5,7 +5,10 @@
         {{ title }}
       </div>
       <div class="box__actions">
-        <BaseButton pre-icon="plus-icon" />
+        <BaseButton
+          pre-icon="plus-icon"
+          @click="$emit('click:add')"
+        />
         <slot name="actions" />
       </div>
     </div>
@@ -16,13 +19,15 @@
 </template>
 
 <script setup>
-import BaseButton from './BaseButton.vue';
+import BaseButton from '@/components/BaseButton.vue';
+
 defineProps({
   title: {
     type: String,
     required: true,
   }
-})
+});
+defineEmits(['click:add']);
 </script>
 
 <style lang="scss">
